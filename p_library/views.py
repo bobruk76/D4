@@ -1,14 +1,14 @@
 from django.http import HttpResponse
 from django.template import loader
-from p_library.models import Book
+from p_library.models import Book, Publisher
 from django.shortcuts import redirect
-def books_list(request):
-    books = Book.objects.all()
-    return HttpResponse(books)
 
 def index(request):
     template = loader.get_template('index.html')
-    books_count = Book.objects.all().count()
+    return HttpResponse(template.render({}, request))
+
+def books_list(request):
+    template = loader.get_template('books.html')
     books = Book.objects.all()
     biblio_data = {
         "title": "мою библиотеку",
@@ -49,3 +49,12 @@ def book_decrement(request):
         return redirect('/index/')
     else:
         return redirect('/index/')
+
+def books_publ(request):
+    template = loader.get_template('publishing.html')
+
+    publishers = Publisher.objects.all()
+    data = {
+        "publishers": publishers,
+    }
+    return HttpResponse(template.render(data, request))
