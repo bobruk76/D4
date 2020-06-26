@@ -35,6 +35,14 @@ class Book(models.Model):
         return self.title
 
 
+class Publisher(models.Model):
+    name = models.TextField(verbose_name=_("Название издательства"))
+
+    books = models.ManyToManyField("p_library.Book", verbose_name=_("Книги"),
+                                   through="p_library.BookPublishing")
+    def __str__(self):
+        return self.name
+
 class Reader(models.Model):
     # id = models.UUIDField(default=uuid.uuid4, primary_key=True,
     #                       verbose_name=_("Уникальный ключ"))
@@ -63,3 +71,20 @@ class BookReading(models.Model):
         return "-".join((str(self.book),
                          str(self.reader),
                          str(self.completion),))
+
+class BookPublishing(models.Model):
+
+    book = models.ForeignKey("p_library.Book", on_delete=models.CASCADE,
+                             verbose_name=_("Книга"),
+                             related_name="bookpublishing_book")
+
+    publisher = models.ForeignKey("p_library.Publisher", on_delete=models.CASCADE,
+                               verbose_name=_("Издательство"),
+                               related_name="bookpublishing_publisher")
+
+    year = models.SmallIntegerField(verbose_name=_("Год публикации"))
+
+    def __str__(self):
+        return "-".join((str(self.book),
+                         str(self.publisher),
+                         str(self.year),))
