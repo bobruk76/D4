@@ -14,12 +14,9 @@
             <li class="list-group-item list-group-item-primary">{{ publisher.name }}
                 <span class="badge badge-primary badge-pill">{{ publisher.books.all|length }}</span>
                 <ul>
-                {% for item in publisher.BookPublishing.all %}
-                    <li class="list-group-item list-group-item-secondary">{{ item }} -- {{ book.year }}</li>
+                {% for book in publisher.books.all %}
+                    <li class="list-group-item list-group-item-secondary">{{ book.title }} -- {{ book.year_release }}</li>
                 {% endfor %}
-<!--                 {% for book in publisher.books.all %}
-                    <li class="list-group-item list-group-item-secondary">{{ book.title }} -- {{ book.year }}</li>
-                {% endfor %} -->
                 </ul>
             </li>
         {% endfor %}
